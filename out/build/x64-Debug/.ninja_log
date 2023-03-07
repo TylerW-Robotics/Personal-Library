@@ -1,0 +1,12 @@
+# ninja log v5
+22	969	6998609202541590	CMakeFiles/FinalProject.dir/src/textTool.cpp.obj	474cad858c9a2533
+13	845	6998628980467691	CMakeFiles/FinalProject.dir/src/main.cpp.obj	f75fdefc91fd962d
+18	872	6998628980777592	CMakeFiles/FinalProject.dir/src/personalLibrary.cpp.obj	9e85ad77d458ab32
+873	1110	6998628982495274	FinalProject.exe	c05dbfbd202301d4
+12	244	6998629738927766	build.ninja	e09837e92ba33468
+12	811	6998630025652214	CMakeFiles/FinalProject.dir/src/main.cpp.obj	f75fdefc91fd962d
+812	1114	6998630027831517	FinalProject.exe	c05dbfbd202301d4
+13	830	6998630833520318	CMakeFiles/FinalProject.dir/src/main.cpp.obj	f75fdefc91fd962d
+831	1059	6998630835249771	FinalProject.exe	c05dbfbd202301d4
+13	789	6998631508731178	CMakeFiles/FinalProject.dir/src/main.cpp.obj	f75fdefc91fd962d
+790	1085	6998631511040439	FinalProject.exe	c05dbfbd202301d4
