@@ -12,5 +12,5 @@ bool strInVec(std::string str, std::vector<std::string> v);
 bool isNumber(std::string str);
 std::vector<std::string> strToVector(std::string str);
 void strCharSwap(std::string& str, const char c1, const char c2);
-
+void removeChar(std::string& str, char c);
 #endif

@@ -30,7 +30,7 @@ class PersonalLibrary
 	std::string fileName;
 	std::vector<Book> bookVec;
 public:
-
+ 
 	PersonalLibrary(std::string f);
 	// Filename Functions
 	void setFilename(std::string f);
@@ -42,9 +42,18 @@ public:
     bool removeAllBooks();
     bool printBook(); // default will print all. bool is for it was successful.
     bool printBook(std::string title, uint8_t index); // string only searches for book to print. bool is for it was successful.
+    void printFromIndex(int index);
+    std::string readBookCatagory(int bookIndex, int catagory);
     // Class Functions
     uint8_t collectFromFile(); // 0: success, 1: invalid filename used, 2: Bad csv file set up
     void createNewFile();
+    bool deleteEntry(std::string choiceTitle);
+    int findTitleIndex(std::string title);
+    void changeEntry(std::string str, int bookIndex, int catagory);
+    // Custom Tools
+    bool nameTaken(std::string newTitle, uint8_t index);
+    bool validName(std::string str);
+
 };
 
 #endif

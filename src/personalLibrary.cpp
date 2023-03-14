@@ -136,7 +136,7 @@ bool PersonalLibrary::file_exist()
 
 uint8_t PersonalLibrary::collectFromFile() {
     uint8_t status = 0;
-    int len, row = 0;
+    int len, row, lineCount = 0;
 
     // Check if file is real // Error code 1
     if (!file_exist())
@@ -150,7 +150,21 @@ uint8_t PersonalLibrary::collectFromFile() {
     string line, item;
 
     Book tempBook = Book();
-    // 
+    
+    // For max speed and saving mem
+    // Read the file first to determine the vector size
+    // and then reread the file to collect the data. 
+    // this is to prevent slowdown from re-sizing the vector multiple times.
+
+    while (getline(csvFile, line)) {
+        lineCount++;
+    }
+    csvFile.close();
+    vector<Book> tempVec(lineCount);
+
+    int vecSize = 0;
+
+    csvFile.open((fileName + ".csv"));
     while (getline(csvFile, line))
     {
         len = 0;
@@ -162,7 +176,9 @@ uint8_t PersonalLibrary::collectFromFile() {
         if (len == 6) { 
             // if correct num of entrys,
             // then sumbit Book struct to library
-            addBook(tempBook);
+            tempVec[vecSize] = tempBook;
+            vecSize++;
+            //addBook(tempBook);
             //cout << len << "\n";
             //cout << tempBook << endl;
         } 
@@ -172,11 +188,19 @@ uint8_t PersonalLibrary::collectFromFile() {
         }
 
     }
+    
+    if (vecSize == 0) {
+        return 3;
+    }
+    tempVec.resize(vecSize);
+
+    bookVec.assign(tempVec.begin(), tempVec.end());
 
     return status;
     //0: success
     //1: invalid file name
     //2: invild csv lines
+    //3: Empty File
 }
 
 
@@ -195,7 +219,7 @@ bool PersonalLibrary::printBook() {
     return true;
 }
 
-bool PersonalLibrary::printBook(string title, uint8_t index) {
+bool PersonalLibrary::printBook(string phrase, uint8_t index) {
     // !!! needs a stronger search
     // example: title harry potter, then print all harry potter books.
     
@@ -205,7 +229,7 @@ bool PersonalLibrary::printBook(string title, uint8_t index) {
 
     for (int i = 0; i < bookVec.size(); i++)
     {
-        if (title == bookVec[i].dataSelect(index))  
+        if (bookVec[i].dataSelect(index).find(phrase) != string::npos)
         {
             cout << bookVec[i] << "\n";
             found = true;
@@ -214,6 +238,12 @@ bool PersonalLibrary::printBook(string title, uint8_t index) {
     return found;
 }
 
+void PersonalLibrary::printFromIndex(int index) {
+    cout << bookVec[index] << endl;
+}
+string PersonalLibrary::readBookCatagory(int bookIndex, int catagory) {
+    return bookVec[bookIndex].dataSelect(catagory);
+}
 // --
 
 // Edit Options
@@ -240,4 +270,49 @@ bool PersonalLibrary::removeAllBooks() {
     
     bookVec.clear();
     return true;
+}
+bool PersonalLibrary::nameTaken(string newTitle, uint8_t index) {
+    for (int i = 0; i < bookVec.size(); i++)
+    {
+        if (bookVec[i].dataSelect(index) == newTitle)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+bool PersonalLibrary::validName(string str) {
+    vector<string> banStr = { "title", "-back-" };
+    for (int i = 0; i < banStr.size(); i++)
+    {
+        if (banStr[i] == str)
+        {
+            return false; // string is unuseable.
+        }
+    }
+    return true; // string is useable.
+}
+bool PersonalLibrary::deleteEntry(string choiceTitle) {
+    for (int i = 0; i < bookVec.size(); i++)
+    {
+        if (choiceTitle == bookVec[i].title)
+        {
+            bookVec.erase(bookVec.begin() + i);
+            return true;
+        }
+    }
+    return false;
+}
+int PersonalLibrary::findTitleIndex(string title) {
+    for (int i = 0; i < bookVec.size(); i++)
+    {
+        if (bookVec[i].title == title)
+        {
+            return i;
+        }
+    }
+    return -1;
+}
+void PersonalLibrary::changeEntry(string str, int bookIndex, int catagory) {
+    bookVec[bookIndex].dataEntry(str, catagory);
 }

@@ -63,3 +63,7 @@ void strCharSwap(string& str, const char c1, const char c2) {
         }
     }
 }
+
+void removeChar(string& str, char c) {
+    str.erase(remove(str.begin(), str.end(), c), str.end());
+}
